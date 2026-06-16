@@ -12,6 +12,22 @@ Because this is a third-party tap, the strict notability and acceptance rules of
 the official repo do not apply—but the cask DSL conventions and local validation
 still do.
 
+## Why This Tap Exists
+
+This repo was created to keep distributing [CopyQ](https://github.com/hluk/CopyQ)
+via Homebrew on macOS:
+
+- CopyQ used to ship as a cask in the official Homebrew Cask repo.
+- That cask is being deprecated because the upstream build does not pass Apple's
+  Gatekeeper check (it is not notarized/signed by an Apple-recognized developer
+  account).
+- Notarization requires an Apple Developer account, and the maintainer's position
+  is that developers should not be charged for distributing apps outside the
+  Apple App Store. See [hluk/CopyQ#3498](https://github.com/hluk/CopyQ/issues/3498).
+- Following the workaround proposed in
+  [hluk/CopyQ#2652 (comment)](https://github.com/hluk/CopyQ/issues/2652#issuecomment-4171306975),
+  this personal tap was set up so users can keep installing CopyQ through Homebrew.
+
 ## Tap Basics
 
 Install the tap and a cask:
