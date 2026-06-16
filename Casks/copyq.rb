@@ -23,11 +23,31 @@ cask "copyq" do
     strategy :github_latest
   end
 
-  disable! date: "2026-09-01", because: :fails_gatekeeper_check
-
   depends_on :macos
 
   app "CopyQ.app"
+
+  # The upstream build is not notarized and fails Gatekeeper. Reset the
+  # quarantine flag, ad-hoc re-sign, refresh the CLI symlink, and clear the
+  # stale Accessibility entry so macOS treats the new bundle as a fresh app.
+  # https://github.com/hluk/CopyQ/issues/2652
+  postflight do
+    system_command "/usr/bin/xattr",
+                   args:         ["-d", "com.apple.quarantine", "#{appdir}/CopyQ.app"],
+                   must_succeed: false
+
+    system_command "/usr/bin/codesign",
+                   args: ["--force", "--deep", "--sign", "-", "#{appdir}/CopyQ.app"]
+
+    system_command "/bin/ln",
+                   args: ["-sf", "#{appdir}/CopyQ.app/Contents/MacOS/CopyQ", "#{HOMEBREW_PREFIX}/bin/copyq"],
+                   sudo: true
+
+    system_command "/usr/bin/tccutil",
+                   args:         ["reset", "Accessibility", "io.github.hluk.CopyQ"],
+                   sudo:         true,
+                   must_succeed: false
+  end
 
   zap trash: [
     "~/.config/copyq",
