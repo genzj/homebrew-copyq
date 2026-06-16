@@ -34,8 +34,12 @@ Install the tap and a cask:
 
 ```sh
 brew tap genzj/copyq https://github.com/genzj/homebrew-copyq
-brew install --cask copyq          # or the fully-qualified genzj/copyq/copyq
+brew install --cask genzj/copyq/copyq
 ```
+
+Always use the **fully-qualified** token `genzj/copyq/copyq`. A bare `copyq`
+token is ambiguous—`copyq` also exists in the official Homebrew Cask repo, so
+`brew install --cask copyq` resolves to the core cask, not this tap.
 
 ## Before Any PR
 
@@ -100,7 +104,9 @@ Commit message: `<cask> <version> (new cask)` (e.g., `myapp 1.0.0 (new cask)`)
 ## Required Validation
 
 Run from a checkout of this tap. Set `HOMEBREW_NO_INSTALL_FROM_API=1` so Homebrew
-reads the local cask file instead of the API.
+reads the local cask file instead of the API. Always pass the fully-qualified
+`genzj/copyq/<cask>` token—a bare token can resolve to the official Homebrew Cask
+of the same name instead of this tap.
 
 ```sh
 export HOMEBREW_NO_INSTALL_FROM_API=1
