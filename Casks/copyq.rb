@@ -31,22 +31,22 @@ cask "copyq" do
   # quarantine flag, ad-hoc re-sign, refresh the CLI symlink, and clear the
   # stale Accessibility entry so macOS treats the new bundle as a fresh app.
   # https://github.com/hluk/CopyQ/issues/2652
-  postflight do
-    system_command "/usr/bin/xattr",
-                   args:         ["-d", "com.apple.quarantine", "#{appdir}/CopyQ.app"],
-                   must_succeed: false
+  postflight_steps do
+    run "/usr/bin/xattr",
+        args:         ["-d", "com.apple.quarantine", "{{appdir}}/CopyQ.app"],
+        must_succeed: false
 
-    system_command "/usr/bin/codesign",
-                   args: ["--force", "--deep", "--sign", "-", "#{appdir}/CopyQ.app"]
+    run "/usr/bin/codesign",
+        args: ["--force", "--deep", "--sign", "-", "{{appdir}}/CopyQ.app"]
 
-    system_command "/bin/ln",
-                   args: ["-sf", "#{appdir}/CopyQ.app/Contents/MacOS/CopyQ", "#{HOMEBREW_PREFIX}/bin/copyq"],
-                   sudo: true
+    run "/bin/ln",
+        args: ["-sf", "{{appdir}}/CopyQ.app/Contents/MacOS/CopyQ", "{{HOMEBREW_PREFIX}}/bin/copyq"],
+        sudo: true
 
-    system_command "/usr/bin/tccutil",
-                   args:         ["reset", "Accessibility", "io.github.hluk.CopyQ"],
-                   sudo:         true,
-                   must_succeed: false
+    run "/usr/bin/tccutil",
+        args:         ["reset", "Accessibility", "io.github.hluk.CopyQ"],
+        sudo:         true,
+        must_succeed: false
   end
 
   zap trash: [
