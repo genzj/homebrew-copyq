@@ -26,6 +26,15 @@ brew install --cask genzj/copyq/copyq
 Always use the fully-qualified token `genzj/copyq/copyq`. A bare `copyq` resolves
 to the (deprecated) cask in the official Homebrew Cask repo, not this tap.
 
+### macOS 12 (Monterey)
+
+CopyQ 17.0.0 and later require macOS 13 (Ventura) or newer. If you are still on
+macOS 12, install the pinned legacy cask instead:
+
+```sh
+brew install --cask genzj/copyq/copyq@16
+```
+
 The install runs a `postflight` that removes the quarantine flag, ad-hoc re-signs
 the bundle, links the `copyq` CLI into your Homebrew prefix, and resets the
 Accessibility permission entry. The symlink and permission reset require `sudo`,
